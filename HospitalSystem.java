@@ -46,9 +46,8 @@ public class HospitalSystem{
             System.out.println("");
             System.out.println("1. Add Patient");
             System.out.println("2. Search Patient");
-            System.out.println("3. Display Patient");
-            System.out.println("4. Display All Patients");
-            System.out.println("5. Delete Patient");
+            System.out.println("3. Display All Patients");
+            System.out.println("4. Delete Patient");
             System.out.println("5.Exit");
             System.out.print("Enter option: ");
             String choice = input.nextLine();
@@ -58,13 +57,13 @@ public class HospitalSystem{
                     AddPatient(patients,input);
                 break;
                 case "2":
-
+                    search(patients, input);
                 break;
                 case "3":
-                    
+                    DisplayPatients(patients);
                 break;
                 case "4":
-                    DisplayPatients(patients);
+                    delete(patients, input);
                     
                 break;
                 case "5":
@@ -162,6 +161,42 @@ public class HospitalSystem{
             System.out.println("\nPatient Created...");
         }
 
+        public static void search(ArrayList<Patient> patients ,Scanner input){
+            if(patients.isEmpty()){
+                System.out.println("No Patients in Database...");
+                return;
+            }
+            int id = 0;
+            try{
+                
+            System.out.println("\n\n\tSearch Patient");
+            System.out.print("Enter Patient ID: ");
+             id = input.nextInt();
+            input.nextLine();
+            }catch(InputMismatchException e){
+                System.out.println("Invalid Data type...");
+                input.nextLine();
+            }
+
+            Patient patient = null;
+            for(Patient s:patients){
+                if(id == s.getId()){
+                    patient = s;
+                }
+            }
+            if(patient == null){
+                System.out.println("Patient not Found...");
+                return;
+            }
+            System.out.println("\n---------Patient Info-----------");
+            System.out.println("NAME: " + patient.getName());
+            System.out.println("ID: "+patient.getId());
+            System.out.println("AGE: "+ patient.getAge());
+            System.out.println("GENDER: "+ patient.getGender());
+            System.out.println("PHONE: "+patient.getPhone());
+
+        }
+
         public static void DisplayPatients(ArrayList<Patient> patients){
             System.out.println("Patient --- Display");
             if(patients.isEmpty()){
@@ -179,5 +214,35 @@ public class HospitalSystem{
                 num++;
             }
         }
+        public static void delete(ArrayList<Patient> patients ,Scanner input){
+            System.out.println("\n\nDelete Patient ");
+            if(patients.isEmpty()){
+                System.out.println("Database is Empty...");
+                return;
+            }
+            int id = 0;
+            try{
+            System.out.print("Enter Patient ID to Delete: ");
+             id = input.nextInt();
+            input.nextLine();
+            }catch(InputMismatchException e){
+                System.out.println("Invalid Data type...");
+                input.nextLine();
+            }
+
+            Patient patient = null;
+            for(Patient s:patients){
+                if(id == s.getId()){
+                    patient = s;
+                }
+            }
+            if(patient == null){
+                System.out.println("Patient not Found...");
+                return;
+            }
+            patients.remove(patient);
+            System.out.println("Patient Deleted...");
+        }
+        
 
     }
