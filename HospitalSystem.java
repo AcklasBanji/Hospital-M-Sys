@@ -6,6 +6,7 @@ public class HospitalSystem{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
         ArrayList<Patient> patients = new ArrayList<>();
+        ArrayList<Doctor> doctors = new ArrayList<>();
         boolean running = true;
         while(running){
             System.out.println("\t\t\t\n\nHospital Management System..");
@@ -23,7 +24,7 @@ public class HospitalSystem{
                         patientMenu(patients,input);
                     break;
                     case "2":
-
+                        doctorMenu(doctors,input);
                     break;
                     case "3":
 
@@ -107,6 +108,7 @@ public class HospitalSystem{
             }catch(InputMismatchException e){
                 System.out.print("Invalid Data type input...");
                 input.nextLine();
+                return;
             }
 
 
@@ -206,11 +208,11 @@ public class HospitalSystem{
             int num = 1;
             for(Patient s:patients){
                 System.out.println("\t\t\nPatient " + num);
-                System.out.println("\nName- "+ s.getName());
+                System.out.println("\nNAME- "+ s.getName());
                 System.out.println("ID- "+ s.getId());
-                System.out.println("Age- " + s.getAge());
-                System.out.println("Gender- "+ s.getGender());
-                System.out.println("Phone- +260"+ s.getPhone());
+                System.out.println("AGE- " + s.getAge());
+                System.out.println("GENDER- "+ s.getGender());
+                System.out.println("PHONE- +260"+ s.getPhone());
                 num++;
             }
         }
@@ -245,4 +247,172 @@ public class HospitalSystem{
         }
         
 
+
+        // Add Doctor
+
+        public static void doctorMenu(ArrayList<Doctor> doctors ,Scanner input){
+            boolean running = true;
+            while(running){
+                
+            System.out.println("\n\nDOCTOR MANAGEMENT");
+            System.out.println("");
+            System.out.println("1. Add doctor");
+            System.out.println("2. Search doctor");
+            System.out.println("3. Display All doctorS");
+            System.out.println("4.Exit");
+            System.out.print("Enter option: ");
+            String choice = input.nextLine();
+
+            switch(choice){
+                case "1":
+                    addDoctor(doctors,input);
+                break;
+                case "2":
+                     searchDoctor(doctors, input);
+                break;
+                case "3":
+                     displayDoctors(doctors);
+                break;
+                case "4":
+                    running = false;
+                break;
+                default:
+                    System.out.println("Invalid Option...");
+            }
+            }
+        }
+
+        public static void addDoctor(ArrayList<Doctor> doctors ,Scanner input){
+
+            String name = " ";
+            int id = 0;
+            String specialisation = " ";
+            String gender = " ";
+            int phone = 0;
+
+
+            System.out.println("\tCreate Doctor");
+            try{
+                
+            System.out.print("Enter ID(4 digits): ");
+             id = input.nextInt();
+            input.nextLine();
+            String idStr = String.valueOf(id);
+            if(!idStr.matches("\\d{4}")){
+                System.out.print("\nInvalid ID length input...");
+                return;
+            }
+            for(Doctor s:doctors){
+                if(id == s.getId()){
+                    System.out.println("Id already Exists...");
+                    return;
+                }
+            }
+
+            }catch(InputMismatchException e){
+                System.out.print("Invalid Data type input...");
+                input.nextLine();
+                return;
+            }
+
+
+            System.out.print("Enter Name: ");
+             name = input.nextLine().trim();
+            if(!name.matches("[a-zA-Z]+( [a-zA-Z]+)*")){
+                System.out.print("\nInvalid Data type input...");
+                return;
+            }
+
+            System.out.print("Enter Specialisation: ");
+            specialisation = input.nextLine().trim();
+            if(!name.matches("[a-zA-Z]+( [a-zA-Z]+)*")){
+                System.out.print("\nInvalid Data type input...");
+                return;
+            }
+           
+            System.out.print("Enter Gender: ");
+             gender = input.nextLine().trim();
+            if(!gender.matches("[a-zA-Z]+( [a-zA-Z]+)*")){
+                System.out.print("Invalid Data type input...");
+                return;
+            }if(!(gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female") || gender.equalsIgnoreCase("m") || gender.equalsIgnoreCase("f"))){
+                System.out.println("\nInvalid gender...");
+                return;
+            }
+
+
+            try{
+                
+            System.out.print("Enter Phone: ");
+            phone = input.nextInt();
+            input.nextLine();
+            String phStr = String.valueOf(phone);
+            if(!phStr.matches("\\d{9}")){
+                System.out.print("\nInvalid Phone length input...");
+                return;
+            }
+            }catch(InputMismatchException e){
+                System.out.print("\nInvalid Data type input...");
+                input.nextLine();
+                return;
+            }
+
+          Doctor doctor = new Doctor(name, id, specialisation ,gender, phone);
+          doctors.add(doctor);
+            System.out.println("\nDoctor Created...");
+        }
+
+        public static void searchDoctor(ArrayList<Doctor> doctors ,Scanner input){
+            if(doctors.isEmpty()){
+                System.out.println("No Doctors in Database...");
+                return;
+            }
+            int id = 0;
+            try{
+                
+            System.out.println("\n\n\tSearch Doctor");
+            System.out.print("Enter Doctor ID: ");
+             id = input.nextInt();
+            input.nextLine();
+            }catch(InputMismatchException e){
+                System.out.println("Invalid Data type...");
+                input.nextLine();
+            }
+
+            Doctor doctor = null;
+            for(Doctor s:doctors){
+                if(id == s.getId()){
+                    doctor = s;
+                }
+            }
+            if(doctor == null){
+                System.out.println("Doctor not Found...");
+                return;
+            }
+            System.out.println("\n---------Doctor Info-----------");
+            System.out.println("NAME: " + doctor.getName());
+            System.out.println("ID: "+ doctor.getId());
+            System.out.println("GENDER: "+ doctor.getGender());
+            System.out.println("PHONE: "+doctor.getPhone());
+
+        }
+
+        
+        public static void displayDoctors(ArrayList<Doctor> doctors){
+            System.out.println("Doctor --- Display");
+            if(doctors.isEmpty()){
+                System.out.println("Database is Empty...");
+                return;
+            }
+            int num = 1;
+            for(Doctor s:doctors){
+                System.out.println("\t\t\nDOCTOR " + num);
+                System.out.println("\nNAME- DR."+ s.getName());
+                System.out.println("ID- "+ s.getId());
+                System.out.println("SPECIALISATION- "+ s.getSpecialisation());
+                System.out.println("GENDER- "+ s.getGender());
+                System.out.println("PHONE- +260"+ s.getPhone());
+                num++;
+            }
+        }
     }
